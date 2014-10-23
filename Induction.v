@@ -292,15 +292,19 @@ intro.
 induction n as [ | n'].
 Case "n = 0". reflexivity.
 Case "n = S n'".
-  (* FILL IN HERE *) Admitted.
+  simpl. rewrite -> IHn'. rewrite -> plus_n_Sm. reflexivity.
+Qed.
 (** [] *)
 
 
 (** **** Exercise: 1 star (destruct_induction) *)
 (** Briefly explain the difference between the tactics
-    [destruct] and [induction].  
+    [destruct] and [induction].
 
-(* FILL IN HERE *)
+The tactic "destruct" do destruction of some inductive type to it's constructors.
+If the type is defined using recursion we'll get one of it's constructors
+defined recursively, and so on. Thus we can't proove something about the type
+ for an arbitrary number of induction steps.
 
 *)
 (** [] *)
@@ -390,7 +394,13 @@ Proof.
 Theorem plus_swap : forall n m p : nat, 
   n + (m + p) = m + (n + p).
 Proof.
-  (* FILL IN HERE *) Admitted.
+intros.
+rewrite -> plus_assoc.
+assert (n + m = m + n) as H. apply plus_comm.
+rewrite -> H.
+rewrite -> plus_assoc.
+reflexivity.
+Qed.
 
 
 (** Now prove commutativity of multiplication.  (You will probably
@@ -401,7 +411,22 @@ Proof.
 Theorem mult_comm : forall m n : nat,
  m * n = n * m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+intros.
+induction n as [ | n'].
+Case "n = 0".
+  simpl.
+  induction m as [ | m'].
+  SCase "m = 0". reflexivity.
+  SCase "m = S m'". simpl. assumption.
+Case "n = S n'".
+  simpl. rewrite <- IHn'.
+  induction m as [ | m'].
+  SCase "m = 0". simpl. reflexivity.
+  SCase "m = S m'". simpl.
+    assert (m' + (n' + m' * n') = n' + (m' + m' * n')) as H.
+    SSCase "assert proof". rewrite -> plus_swap. reflexivity.
+    rewrite -> H. simpl in IHn'.
+Admitted.
 (** [] *)
 
 (** **** Exercise: 2 stars, optional (evenb_n__oddb_Sn) *)
@@ -411,6 +436,11 @@ Proof.
 Theorem evenb_n__oddb_Sn : forall n : nat,
   evenb n = negb (evenb (S n)).
 Proof.
+intro.
+induction n as [ | n'].
+Case "n = 0". reflexivity.
+Case "n = S n'".
+  
   (* FILL IN HERE *) Admitted.
 (** [] *)
 
