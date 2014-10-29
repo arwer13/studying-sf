@@ -434,7 +434,7 @@ Admitted.
 (** Prove the following simple fact: *)
 
 Theorem evenb_n__oddb_Sn : forall n : nat,
-  evenb n = negb (evenb (S n)).
+ evenb n = negb (evenb (S n)).
 Proof.
 intro.
 induction n as [ | n'].

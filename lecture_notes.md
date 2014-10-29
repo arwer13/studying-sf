@@ -8,6 +8,10 @@ It was prooved by Gedel.
 ## English notes
 - `n'` is spelled _n prime_
 
+# Notation
+    Notation "x :: l" := (cons x l) (at level 60, right associativity).
+    Notation "[ ]" := nil.
+    Notation "[ x ; .. ; y ]" := (cons x .. (cons y nil) ..).
 
 ## Qeustions
 - about `congruence`
