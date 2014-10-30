@@ -44,6 +44,9 @@ It was prooved by Gedel.
 - `exists`. Not constructor `exists`!
 - `refine`
 
+## Other Coq stuff
+- `SearchAbout`. Also, if you are using ProofGeneral, you can run SearchAbout with C-c C-a C-a. Pasting its response into your buffer can be accomplished with C-c C-;.
+    - `SearchAbout foo`
 
 ## Terms
 - `backward` and `forward` reasoning

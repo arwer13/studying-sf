@@ -481,18 +481,23 @@ Example test_subset2:              subset [1;2;2] [2;1;4;1] = false.
     you haven't learned yet.  Feel free to ask for help if you get
     stuck! *)
 
-Theorem count_bag_sum: forall b1 b2: bag, forall n: nat, (count n b1) + (count n b2) = count n (sum b1 b2).
+Theorem count_bag_sum: forall b1 b2: bag, forall n: nat,
+                         (count n b1) + (count n b2) = count n (sum b1 b2).
 Proof.
 intros.
-induction b1.
+induction b1 as [ | h t].
 Case "b1 = []".
   simpl. reflexivity.
-Case "b1 = h::t".
-  simpl.
+Case "b1 = h::t". (* ?? n = h AND n <> h *)
+
+simpl.
+Admitted. 
 (*
+refine(
   match nateq n n0 with
   | true => _
   | false => _
+)
 *)
 (** [] *)
 
@@ -814,13 +819,29 @@ Proof.
 Theorem app_nil_end : forall l : natlist, 
   l ++ [] = l.   
 Proof.
-  (* FILL IN HERE *) Admitted.
+intro.
+induction l as [ | h t].
+  reflexivity.
+  simpl. rewrite -> IHt. reflexivity.
+Qed.
 
+Lemma rev_cons_snoc: forall t: natlist, forall h: nat, h :: t = rev (snoc (rev t) h).
+Proof. (* ?? *)
+intros.
+induction t as [ | h' t'].
+  reflexivity.
+  simpl.
+Admitted.  
 
 Theorem rev_involutive : forall l : natlist,
   rev (rev l) = l.
 Proof.
-  (* FILL IN HERE *) Admitted.
+intro.
+induction l as [ | h t].
+  reflexivity.
+  simpl. rewrite <- rev_cons_snoc. reflexivity.
+Qed.
+
 
 (** There is a short solution to the next exercise.  If you find
     yourself getting tangled up, step back and try to look for a
@@ -829,18 +850,30 @@ Proof.
 Theorem app_assoc4 : forall l1 l2 l3 l4 : natlist,
   l1 ++ (l2 ++ (l3 ++ l4)) = ((l1 ++ l2) ++ l3) ++ l4.
 Proof.
-  (* FILL IN HERE *) Admitted.
+intros.
+assert (H: l2 ++ l3 ++ l4 = (l2 ++ l3) ++ l4).
+  rewrite -> app_assoc. reflexivity.
+  rewrite -> H.
+rewrite <- app_assoc. rewrite <- app_assoc. reflexivity.
+Qed.
 
 Theorem snoc_append : forall (l:natlist) (n:nat),
   snoc l n = l ++ [n].
 Proof.
-  (* FILL IN HERE *) Admitted.
-
+intros.
+induction l as [ | h t].
+  reflexivity.
+  simpl. rewrite -> IHt. reflexivity.
+Qed.
 
 Theorem distr_rev : forall l1 l2 : natlist,
   rev (l1 ++ l2) = (rev l2) ++ (rev l1).
 Proof.
+induction l1 as [ | h t].
+  simpl.  (* ?? *)
   (* FILL IN HERE *) Admitted.
+
+
 
 (** An exercise about your implementation of [nonzeros]: *)
 
